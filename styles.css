@@ -1,3 +1,20 @@
+/* Remove button for playlist items */
+.remove-btn {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 8px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background 0.2s;
+}
+
+.remove-btn:hover {
+    background: #c0392b;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -71,7 +88,8 @@ input[type="file"] {
     min-height: 300px;
 }
 
-video, audio {
+video,
+audio {
     max-width: 100%;
     max-height: 70vh;
     outline: none;
@@ -160,13 +178,13 @@ button:disabled {
     .controls {
         flex-wrap: wrap;
     }
-    
+
     #timeDisplay {
         width: 100%;
         text-align: center;
         margin-top: 10px;
     }
-    
+
     .media-container {
         min-height: 200px;
     }
