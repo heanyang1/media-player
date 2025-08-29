@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const skipForwardBtn = document.getElementById('skipForwardBtn');
     const playlistItems = document.getElementById('playlistItems');
 
+    const timeDisplay = document.getElementById('timeDisplay');
     let currentMedia = null;
     let currentFileIndex = -1;
     let mediaFiles = [];
@@ -129,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currentMedia.pause();
             currentMedia.currentTime = 0;
             currentMedia.removeEventListener('ended', handleMediaEnded);
+            currentMedia.removeEventListener('timeupdate', updateTimeDisplay);
+            currentMedia.removeEventListener('durationchange', updateTimeDisplay);
         }
 
         // Set up the appropriate player
@@ -137,6 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create object URL for the file
         const fileURL = URL.createObjectURL(file);
+
+        // Attach event listeners before playing
+        currentMedia.addEventListener('ended', handleMediaEnded);
+        currentMedia.addEventListener('timeupdate', updateTimeDisplay);
+        currentMedia.addEventListener('durationchange', updateTimeDisplay);
 
         if (isVideo) {
             videoPlayer.src = fileURL;
@@ -150,10 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlaylist();
         playPauseBtn.textContent = 'Pause';
         playPauseBtn.disabled = false;
-        stopBtn.disabled = false;
 
-        // Set up event listeners
-        currentMedia.addEventListener('ended', handleMediaEnded);
+        // Immediately update time display for new media
+        updateTimeDisplay();
 
         // Play the media
         currentMedia.play().catch(error => {
@@ -203,6 +210,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Format time as mm:ss
+    function formatTime(seconds) {
+        if (isNaN(seconds) || seconds === Infinity) return '00:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    // Update the time display field
+    function updateTimeDisplay() {
+        if (!currentMedia) {
+            timeDisplay.textContent = '00:00 / 00:00';
+            return;
+        }
+        const cur = formatTime(currentMedia.currentTime);
+        const dur = formatTime(currentMedia.duration);
+        timeDisplay.textContent = `${cur} / ${dur}`;
+    }
+
     // Initialize
     updateFileList();
+    updateTimeDisplay();
 });
