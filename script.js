@@ -7,8 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const playPauseBtn = document.getElementById('playPauseBtn');
     const skipBackBtn = document.getElementById('skipBackBtn');
     const skipForwardBtn = document.getElementById('skipForwardBtn');
+    const increaseRateBtn = document.getElementById('increaseRateBtn');
+    const decreaseRateBtn = document.getElementById('decreaseRateBtn');
     const playlistItems = document.getElementById('playlistItems');
-
+    const speedDisplay = document.getElementById('speedDisplay');
+    const resetRateBtn = document.getElementById('resetRateBtn');
     const timeDisplay = document.getElementById('timeDisplay');
     let currentMedia = null;
     let currentFileIndex = -1;
@@ -19,6 +22,34 @@ document.addEventListener('DOMContentLoaded', () => {
     playPauseBtn.addEventListener('click', togglePlayPause);
     skipBackBtn.addEventListener('click', () => skipTime(-15));
     skipForwardBtn.addEventListener('click', () => skipTime(15));
+    increaseRateBtn.addEventListener('click', () => changePlaybackRate(0.1));
+    decreaseRateBtn.addEventListener('click', () => changePlaybackRate(-0.1));
+    resetRateBtn.addEventListener('click', () => resetPlaybackRate());
+    // Change playback rate by delta (0.1 or -0.1)
+    function changePlaybackRate(delta) {
+        if (!currentMedia) return;
+        let newRate = Math.round((currentMedia.playbackRate + delta) * 10) / 10;
+        // Clamp between 0.1 and 5.0
+        newRate = Math.max(0.5, Math.min(4.0, newRate));
+        currentMedia.playbackRate = newRate;
+        updateSpeedDisplay();
+    }
+
+    // Reset playback rate to 1.0
+    function resetPlaybackRate() {
+        if (!currentMedia) return;
+        currentMedia.playbackRate = 1.0;
+        updateSpeedDisplay();
+    }
+
+    // Update the speed display field
+    function updateSpeedDisplay() {
+        if (!currentMedia) {
+            speedDisplay.value = '1.0x';
+        } else {
+            speedDisplay.value = currentMedia.playbackRate.toFixed(1) + 'x';
+        }
+    }
 
     // Handle file selection
     function handleFileSelect(event) {
@@ -146,6 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMedia.addEventListener('timeupdate', updateTimeDisplay);
         currentMedia.addEventListener('durationchange', updateTimeDisplay);
 
+        // Reset playback rate to 1.0 and update speed display
+        currentMedia.playbackRate = 1.0;
+        updateSpeedDisplay();
+
         if (isVideo) {
             videoPlayer.src = fileURL;
             videoPlayer.style.display = 'block';
@@ -232,4 +267,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     updateFileList();
     updateTimeDisplay();
+    updateSpeedDisplay();
 });
