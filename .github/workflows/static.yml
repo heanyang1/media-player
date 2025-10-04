@@ -31,6 +31,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+                
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+          components: rust-src, rustfmt, clippy
+      
+      - name: Install wasm-bindgen
+        run: cargo install -f wasm-bindgen-cli --version 0.2.104  
+      
+      - name: Build WASM
+        run: |
+          cd relic
+          cargo build --target wasm32-unknown-unknown --release
+          wasm-bindgen target/wasm32-unknown-unknown/release/relic.wasm --out-dir ./pkg --target web
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
