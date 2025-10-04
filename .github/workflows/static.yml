@@ -48,8 +48,10 @@ jobs:
       - name: Build WASM
         run: |
           cd relic
+          rustup target add wasm32-unknown-unknown
           cargo build --target wasm32-unknown-unknown --release
           wasm-bindgen target/wasm32-unknown-unknown/release/relic.wasm --out-dir ./pkg --target web
+          cd ..
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
