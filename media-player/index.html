@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Player</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../index.html">Tools</a>
+        </div>
+    </nav>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <h1>Media Player</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="upload-container">
+            <input type="file" id="fileInput" multiple>
+            <label for="fileInput" class="upload-btn">Choose Files</label>
+            <div id="fileList" class="file-list"></div>
+        </div>
+
+        <div class="player-container">
+            <div class="media-container">
+                <video id="videoPlayer" controls style="display: none;">
+                    Your browser does not support the video tag.
+                </video>
+                <audio id="audioPlayer" controls style="display: none;">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+            <div class="controls">
+                <button id="skipBackBtn" title="Skip back 15s">⏪ 15s</button>
+                <button id="playPauseBtn" disabled>Play</button>
+                <button id="skipForwardBtn" title="Skip forward 15s">15s ⏩</button>
+                <button id="decreaseRateBtn" title="Decrease playback speed">- Speed</button>
+                <input id="speedDisplay" type="text" value="1.0x" readonly style="width: 50px; text-align: center;"
+                    title="Current speed" />
+                <button id="resetRateBtn" title="Reset speed to 1x">Reset</button>
+                <button id="increaseRateBtn" title="Increase playback speed">+ Speed</button>
+                <span id="timeDisplay" class="time-display">00:00 / 00:00</span>
+            </div>
+
+            <div class="playlist" id="playlist">
+                <h3>Playlist</h3>
+                <ul id="playlistItems"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function changePlaybackRate(delta) {
         if (!currentMedia) return;
         let newRate = Math.round((currentMedia.playbackRate + delta) * 10) / 10;
-        // Clamp between 0.1 and 5.0
+        // Clamp between 0.5 and 4.0
         newRate = Math.max(0.5, Math.min(4.0, newRate));
         currentMedia.playbackRate = newRate;
         updateSpeedDisplay();

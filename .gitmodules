@@ -1,0 +1,4 @@
+[submodule "relic"]
+	path = relic
+	url = https://github.com/heanyang1/relic
+	branch = interpreter
